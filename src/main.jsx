@@ -11,6 +11,7 @@ import About from "./components/About.jsx";
 import Contact from "./components/Contact.jsx";
 import Signup from "./components/Signup.jsx";
 import AuthProvider from "./AuthProvider/AuthProvider.jsx";
+import PrivateRoute from "./privateRoute/PrivateRoute.jsx";
 
 const router = createBrowserRouter([
   {
@@ -24,12 +25,12 @@ const router = createBrowserRouter([
       },
       {
         path: "/updatecoffee/:id",
-        element: <UpdateCoffee />,
+        element: <PrivateRoute><UpdateCoffee /></PrivateRoute>,
         loader: ({ params }) => fetch(`http://localhost:5000/coffee/${params.id}`),
       },
       {
         path: "/addcoffee",
-        element: <AddCoffee />,
+        element: <PrivateRoute><AddCoffee /></PrivateRoute>,
       },
       {
         path:"/login",

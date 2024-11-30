@@ -1,10 +1,11 @@
 import React, { useContext } from "react";
 import SocialLogin from "./SocialLogin";
 import { AuthContext } from './../AuthProvider/AuthProvider';
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-    const {signupuser} = useContext(AuthContext)
-
+    const {signupuser,updateprofile} = useContext(AuthContext)
+   const navigate = useNavigate()
     const handlesignUP = (e)=>{
         e.preventDefault()
         const form = e.target
@@ -15,6 +16,15 @@ const Signup = () => {
         signupuser(email,password)
         .then(res=>{
             console.log(res.user)
+            const profile = {
+              displayName: name
+            }
+            updateprofile(profile)
+              .then(res=>{
+                console.log("profile done")
+                navigate('/')
+              })
+            
         })
         .catch(error=>{
             console.log(error)

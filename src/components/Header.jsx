@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../AuthProvider/AuthProvider";
 
 const Header = () => {
+  const  {user,signoutuser} = useContext(AuthContext)
+  const handlelogout = ()=>{
+    signoutuser()
+    .then(res=>{
+      console.log("logout done")
+    })
+    .then(error=>console.log(error))
+  }
   const links = (
     <>
       <li>
@@ -30,7 +39,11 @@ const Header = () => {
       <div>
         <ul className="flex gap-2">{links}</ul>
       </div>
-      <div className="flex gap-4">
+      {
+        user?<div>
+          <h1 className="font-bold text-white">{user?.email}</h1>
+          <button onClick={handlelogout} className="btn">Log Out</button>
+        </div>:<div className="flex gap-4">
         <Link to={'/login'}>
           
           <button className="btn">Login</button>
@@ -39,6 +52,7 @@ const Header = () => {
           <button className="btn">Sign up</button>
         </Link>
       </div>
+      }
     </div>
   );
 };

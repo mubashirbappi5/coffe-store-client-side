@@ -1,44 +1,54 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Swal from 'sweetalert2';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthProvider/AuthProvider';
 
 const CoffeeCard = ({coffe,setcoffees,coffees}) => {
+    const {user} = useContext(AuthContext)
     console.log(coffe)
     const {name,category,chef,photo,_id,details} = coffe
+    const navigate = useNavigate()
 
 
     const handledelete = (_id)=>{
         
+       if(user){
         Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-             
-              console.log(_id)
-              fetch(`http://localhost:5000/coffee/${_id}`,{
-                method:"DELETE"
-              })
-              .then(res=>res.json())
-              .then(data=>{
-                if(data.deletedCount>0){
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "Your file has been deleted.",
-                        icon: "success"
-                      });
-                     const remaingscoffe= coffees.filter(cofee => cofee._id !== _id)
-                     setcoffees(remaingscoffe)
-
-                }          
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+          if (result.isConfirmed) {
+           
+            console.log(_id)
+            fetch(`http://localhost:5000/coffee/${_id}`,{
+              method:"DELETE"
             })
-            }
-          });
+            .then(res=>res.json())
+            .then(data=>{
+              if(data.deletedCount>0){
+                  Swal.fire({
+                      title: "Deleted!",
+                      text: "Your file has been deleted.",
+                      icon: "success"
+                    });
+                   const remaingscoffe= coffees.filter(cofee => cofee._id !== _id)
+                   setcoffees(remaingscoffe)
+
+              }          
+          })
+          }
+        });
+       }
+       else{
+        navigate('/login')
+
+       }
+         
 
     }
     return (
