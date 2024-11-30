@@ -19,45 +19,53 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       {
-        path:"/",
-        element: <App/>,
-        loader:()=>fetch('http://localhost:5000/coffee')
+        path: "/",
+        element: <App />,
+        loader: () =>
+          fetch("https://coffee-shop-server-rho-two.vercel.app/coffee"),
       },
       {
         path: "/updatecoffee/:id",
-        element: <PrivateRoute><UpdateCoffee /></PrivateRoute>,
-        loader: ({ params }) => fetch(`http://localhost:5000/coffee/${params.id}`),
+        element: (
+          <PrivateRoute>
+            <UpdateCoffee />
+          </PrivateRoute>
+        ),
+        loader: ({ params }) =>
+          fetch(
+            `https://coffee-shop-server-rho-two.vercel.app/coffee/${params.id}`
+          ),
       },
       {
         path: "/addcoffee",
-        element: <PrivateRoute><AddCoffee /></PrivateRoute>,
+        element: (
+          <PrivateRoute>
+            <AddCoffee />
+          </PrivateRoute>
+        ),
       },
       {
-        path:"/login",
-        element:<Login/>
+        path: "/login",
+        element: <Login />,
       },
       {
-        path:"/signup",
-        element:<Signup/>
-      }
+        path: "/signup",
+        element: <Signup />,
+      },
     ],
   },
   {
-    path:"/about",
-    element:<About/>
+    path: "/about",
+    element: <About />,
   },
   {
-    path:"/contact",
-    element:<Contact/>
-  }
- 
- 
+    path: "/contact",
+    element: <Contact />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  
-    <AuthProvider>
+  <AuthProvider>
     <RouterProvider router={router} />
-    </AuthProvider>
-  
+  </AuthProvider>
 );
